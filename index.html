@@ -111,7 +111,7 @@
     <div class="container">
         <h2>Image to PDF Converter</h2>
         <div class="drop-zone" id="dropZone">Drag & Drop Images Here</div>
-        <input type="file" id="imageInput" multiple accept="image/*" style="display: none;">
+        <input type="file" id="imageInput" multiple accept="image/*">
         <div id="imagePreview"></div>
         
         <label for="pageSize">Page Size:</label>
@@ -130,6 +130,55 @@
     <footer>
         <p>&copy; 2025 L. Milonjit Singha | Precision in Every Conversion</p>
     </footer>
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        let images = [];
+
+        dropZone.addEventListener('click', () => imageInput.click());
+        imageInput.addEventListener('change', handleFiles);
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            handleFiles(e.dataTransfer);
+        });
+
+        function handleFiles(event) {
+            const files = event.files || event.target.files;
+            for (const file of files) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    images.push(e.target.result);
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.classList.add('preview-img');
+                    imagePreview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function convertToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            images.forEach((img, i) => {
+                if (i > 0) doc.addPage();
+                doc.addImage(img, 'JPEG', 10, 10, 180, 250);
+            });
+            doc.save('converted.pdf');
+        }
+
+        function deleteAllImages() {
+            images = [];
+            imagePreview.innerHTML = '';
+        }
+    </script>
 </body>
 </html>
 
