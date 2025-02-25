@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to PDF Converter</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        @keyframes glow {
+            0% { box-shadow: 0 0 10px #007bff; }
+            50% { box-shadow: 0 0 20px #00f7ff; }
+            100% { box-shadow: 0 0 10px #007bff; }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #121212;
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 10px;
+            animation: glow 2s infinite alternate;
+            max-width: 90%;
+            margin: auto;
+            transition: transform 0.3s ease-in-out;
+        }
+        .container:hover {
+            transform: scale(1.05);
+        }
+        .drop-zone {
+            border: 2px dashed #007bff;
+            padding: 15px;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: background 0.3s;
+        }
+        .drop-zone.dragover {
+            background: #333;
+        }
+        #imagePreview {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .preview-img {
+            width: 70px;
+            height: 70px;
+            margin: 5px;
+            border-radius: 5px;
+            object-fit: cover;
+            border: 1px solid #007bff;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+        .preview-img:hover {
+            transform: scale(1.1);
+            opacity: 0.7;
+        }
+        button {
+            background: linear-gradient(45deg, #007bff, #00f7ff);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: box-shadow 0.3s;
+            width: 100%;
+        }
+        button:hover {
+            box-shadow: 0 0 15px #00f7ff;
+        }
+        select, input[type="range"] {
+            margin: 5px;
+            padding: 5px;
+            width: 100%;
+        }
+        #loading {
+            display: none;
+            margin-top: 10px;
+        }
+        footer {
+            margin-top: 20px;
+            padding: 15px;
+            background: #000;
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            letter-spacing: 1px;
+            font-weight: 600;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            animation: glowEffect 3s infinite alternate ease-in-out;
+            max-width: 90%;
+            margin: 20px auto;
+        }
+        @keyframes glowEffect {
+            0% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
+            100% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Image to PDF Converter</h2>
+        <div class="drop-zone" id="dropZone">Drag & Drop Images Here</div>
+        <input type="file" id="imageInput" multiple accept="image/*" style="display: none;">
+        <div id="imagePreview"></div>
+        
+        <label for="pageSize">Page Size:</label>
+        <select id="pageSize">
+            <option value="a4">A4</option>
+            <option value="letter">Letter</option>
+        </select>
+        
+        <label for="quality">Quality:</label>
+        <input type="range" id="quality" min="0.5" max="1" step="0.1" value="1">
+        
+        <button onclick="convertToPDF()">Convert to PDF</button>
+        <button onclick="deleteAllImages()">Delete All Images</button>
+        <div id="loading">Generating PDF...</div>
+    </div>
+    <footer>
+        <p>&copy; 2025 L. Milonjit Singha | Precision in Every Conversion</p>
+    </footer>
+</body>
+</html>
+
+
+
